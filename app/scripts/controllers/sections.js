@@ -14,6 +14,10 @@ angular.module('bbvaBenchmarkApp')
     	_refreshLSB($rootScope.urlTargets);
     }
 
+    $scope.updateTarget = function( value, p_index ){
+        $rootScope.urlTargets[p_index] = value;
+        _refreshLSB($rootScope.urlTargets);
+    }
     function _refreshLSB( p_data ){
     	localStorage.setItem("urlTargets", JSON.stringify(p_data));
     }

@@ -8,15 +8,17 @@ angular.module('bbvaBenchmarkApp')
 
   var _config = {
     'client_id': _clientId,
-    'scope': 'https://www.googleapis.com/auth/bigquery'
+    'scope': 'https://www.googleapis.com/auth/bigquery.readonly'
   };
 
   $scope.auth = function() {
     gapi.auth.authorize(_config, function() {
-      gapi.client.load('bigquery', 'v2');
+      gapi.client.load('bigquery', 'v2', function(){
         $rootScope.authenticated = true;
         $location.path("/main");
         $scope.$apply();
+      });
+        
     });
   }
 

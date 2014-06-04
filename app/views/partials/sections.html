@@ -1,12 +1,14 @@
 <div ng-controller="SectionsCtrl" class="well">
+	<h4>URL Targets</h4>
+
 	<div class="row" >
 		<div class="col-xs-3 form-group" ng-repeat="target in urlTargets track by $index">
 			<div class="input-group" >
-				<input type="text" class="form-control" placeholder="target" value="{{target}}"><span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="deleteTarget($index)"><span class="glyphicon glyphicon-remove red"></span></button></span>
+				<input type="text" class="form-control" placeholder="target" ng-model="target" ng-change="updateTarget(target, $index)"><span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="deleteTarget($index)"><span class="glyphicon glyphicon-remove red"></span></button></span>
 			</div>
 		</div>
 		<div class="col-xs-3 form-group">
-			<input type="text" class="form-control" placeholder="target" ng-model="auxTarget">
+			<input type="text" class="form-control" placeholder="New target" ng-model="auxTarget">
 		</div>
 		<div class="col-xs-3 form-group">
 			<button type="button" class="btn btn-info" ng-disabled="!auxTarget" ng-click="addTarget(auxTarget)">Add</button>

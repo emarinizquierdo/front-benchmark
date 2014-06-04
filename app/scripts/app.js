@@ -19,16 +19,26 @@ angular.module('bbvaBenchmarkApp', [
       templateUrl: 'partials/ghpd2summary',
       controller: 'Ghpd2summaryCtrl'
     })
+    .when('/help', {
+      templateUrl: 'partials/help',
+      controller: 'HelpCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });
     
   $locationProvider.html5Mode(true);
 
-}).run(function($rootScope){
+}).run(function($rootScope, $location){
 
   var _auxUrlTargets = JSON.parse(localStorage.getItem("urlTargets"));
 
   $rootScope.urlTargets = _auxUrlTargets || [];
+
+  $rootScope.$on('$routeChangeStart', function (event, next) {
+    if (!$rootScope.authenticated) {
+      $location.path('/bigquery');
+    }
+  });
 
 });

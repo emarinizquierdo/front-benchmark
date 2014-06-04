@@ -9,6 +9,10 @@ angular.module('bbvaBenchmarkApp')
     {
 		'title': 'GHPD2 Summary',
 		'link': '/ghpd2Summary'
+    },
+    {
+        'title': 'Help',
+        'link': '/help'
     }];
     
     $scope.isActive = function(route) {

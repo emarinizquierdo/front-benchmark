@@ -9,7 +9,7 @@ angular.module('bbvaBenchmarkApp')
 			queryConfig : '='
 		},
 		replace:false,
-		controller : function($scope, $element, Utils){
+		controller : function($rootScope, $scope, $element, Utils){
 
 			$scope.loading = false;
 
@@ -17,7 +17,7 @@ angular.module('bbvaBenchmarkApp')
 
 			function _handleQuery( p_new ){
 				
-				if(!p_new.query){
+				if(!p_new.query || !$rootScope.authenticated){
 					return false;
 				}
 
