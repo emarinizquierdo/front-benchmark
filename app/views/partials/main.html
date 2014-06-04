@@ -1,0 +1,71 @@
+<div ng-controller="GauthCtrl" ></div>
+
+<h3>Main Dashboard</h3>
+
+<div ng-include="'views/partials/sections.html'"></div>
+
+<div filters></div>
+
+<button type="button" class="btn btn-primary" id="auth_button" ng-click="launchBigQuery();">Try launch Query to BigQuery</button>
+
+<div query-loader query-config="table1Config" style="height: 400px; width: 100%;"></div>
+
+<table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in bigQueryResults">
+          <td>{{$index}}</td><td>{{item.f[0].v}}</td><td>{{item.f[1].v}}</td><td>{{item.f[2].v}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+<p></p>
+<!--
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">Time in ms</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="inputTime" placeholder="Time in ms" ng-model="limit">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-3 control-label">Connection type</label>
+    <div class="col-sm-7">
+      <select class="form-control" ng-model="conecctionType" ng-change="launchQuery()">
+        <option ng-attr-value="wifi" >wifi</option>
+        <option ng-attr-value="redbbva">redbbva</option>
+      </select>
+    </div>
+  </div>
+</form>
+
+<div id="table" style="height: 400px; width: 600px;"></div>
+
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">Time in ms</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="inputTime" placeholder="Time in ms" ng-model="limit2">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-3 control-label">Connection type</label>
+    <div class="col-sm-7">
+      <select class="form-control" ng-model="conecctionType2" ng-change="launchQuery2()">
+        <option ng-attr-value="wifi" >wifi</option>
+        <option ng-attr-value="redbbva">redbbva</option>
+      </select>
+    </div>
+  </div>
+</form>
+<div id="table1" style="height: 400px; width: 600px;"></div>
+
+-->
