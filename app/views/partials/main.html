@@ -2,7 +2,7 @@
 
 <div ng-include="'views/partials/sections.html'"></div>
 
-<div filters></div>
+<div filters current-filter="mainFilter" where-clause="whereClause01" ></div>
 
 <button type="button" class="btn btn-primary" id="auth_button" ng-click="launchBigQuery();" ng-disabled="urlTargets.length < 2">Try launch Query to BigQuery</button>
 

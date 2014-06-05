@@ -4,7 +4,7 @@ angular.module('bbvaBenchmarkApp')
 .controller('MainCtrl', function ($rootScope, $scope, $http, Utils) {
 	
 	// User Submitted Variables
-    var _projectID = '604614689115';
+    var _projectID = $rootScope.projectId;
     $scope.table1Config = {};
 
 	$scope.launchBigQuery = function() {

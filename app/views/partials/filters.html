@@ -1,45 +1,105 @@
 <div class="panel panel-default">
-	<div class="panel-heading" ng-click="collapse()">
+	<div class="panel-heading" >
 		<h4 class="panel-title">
-			<a data-toggle="collapse" class="collapse-title" >
-				Filters
+			<a data-toggle="collapse" class="collapse-title" ng-click="collapse()">
+				Filters				
 			</a>
+			<button type="button" ng-class="{'btn-success' : enableFilters, 'btn-danger' : !enableFilters}" class="btn btn-xs filter-button" ng-click="enableFilters = !enableFilters">{{enableFiltersMessage}}</button>
 		</h4>
 	</div>
 	<div class="containerCollapsable panel-collapse collapse">
 		<div class="panel-body">
-			<div class="row">
-					<div class="col-xs-2 col-md-2 col-lg-2 vcenter text-right">
-						<label class="control-label">Star Time Filter</label>
-					</div>
-					<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
-						<div class="input-group">							
-							<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startTimeFilter" is-open="opened" datepicker-options="dateOptions" close-text="Close" />
-							<span class="input-group-btn">
-								<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-							</span>						
+			<form role="form">
+				<div class="row">
+						<div class="col-xs-2 col-md-2 col-lg-2 vcenter text-right">
+							<label class="control-label">Star Time Filter</label>
+						</div>
+						<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
+							<div class="input-group">							
+								<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startTimeFilter" is-open="opened" datepicker-options="dateOptions" close-text="Close" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>						
+							</div>
+						</div>
+						<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
+							<timepicker ng-model="startTimeFilter"></timepicker>
+						</div>
+				</div>
+				<div class="row">
+						<div class="col-xs-2 col-md-2 col-lg-2 vcenter text-right">
+							<label class="control-label">End Time Filter</label>
+						</div>
+						<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
+							<div class="input-group">
+								<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endTimeFilter" is-open="openedEnd" datepicker-options="dateOptions" close-text="Close" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="openEnd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>						
+							</div>
+						</div>
+						<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
+							<timepicker ng-model="endTimeFilter"></timepicker>
+						</div>
+				</div>
+				<div class="row">
+					<p>
+						<div class="form-group">
+		    				<label class="col-xs-2 col-md-2 col-lg-2 vcenter control-label text-right">Connection Type</label>
+		    				<div class="col-xs-3 vcenter">
+								<multiselect class="input-xlarge" multiple="true"
+							        ng-model="selectedConnectionType"
+							        options="c.name for c in connectionTypes"
+							        change="selected()" ></multiselect>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</p>
+				</div>
+				<div class="row">
+					<p>
+						<div class="form-group">
+		    				<label class="col-xs-2 col-md-2 col-lg-2 vcenter control-label text-right">MimeType</label>
+		    				<div class="col-xs-3 vcenter">
+								<multiselect class="input-xlarge" multiple="true"
+							        ng-model="selectedMimetype"
+							        options="c.name for c in mimetypes"
+							        change="selected()" ></multiselect>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</p>
+		        </div>
+		        <div class="row">
+					<p>
+						<div class="form-group">
+		    				<label class="col-xs-2 col-md-2 col-lg-2 vcenter control-label text-right">Country</label>
+		    				<div class="col-xs-3 vcenter">
+								<multiselect class="input-xlarge" multiple="true"
+							        ng-model="selectedCountry"
+							        options="c.name for c in countries"
+							        change="selected()" ></multiselect>
+							</div>
+							<label class="col-xs-2 col-md-2 col-lg-2 vcenter control-label text-right">Workplace</label>
+		    				<div class="col-xs-3 vcenter">
+								<multiselect class="input-xlarge" multiple="true"
+							        ng-model="selectedWorkplace"
+							        options="c.name for c in workplaces"
+							        change="selected()" disabled="!spainSelected" ></multiselect>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</p>
+		        </div>
+		        <div class="row">
+					<div class="form-group">
+	    				<label class="col-xs-2 col-md-2 col-lg-2 vcenter control-label text-right">User</label>
+	    				<div class="col-xs-3 vcenter">
+							<input type="text" class="form-control" ng-model="userFilter">
 						</div>
 					</div>
-					<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
-						<timepicker ng-model="startTimeFilter"></timepicker>
-					</div>
-			</div>
-			<div class="row">
-					<div class="col-xs-2 col-md-2 col-lg-2 vcenter text-right">
-						<label class="control-label">End Time Filter</label>
-					</div>
-					<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
-						<div class="input-group">
-							<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="endTimeFilter" is-open="openedEnd" datepicker-options="dateOptions" close-text="Close" />
-							<span class="input-group-btn">
-								<button type="button" class="btn btn-default" ng-click="openEnd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-							</span>						
-						</div>
-					</div>
-					<div class="col-xs-3 col-md-3 col-lg-3 vcenter">
-						<timepicker ng-model="endTimeFilter"></timepicker>
-					</div>
-			</div>
+		        </div>
+		    </form>
 		</div>
 	</div>
 </div>

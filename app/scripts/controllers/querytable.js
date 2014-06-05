@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('bbvaBenchmarkApp')
-.controller('QuerytableCtrl', function ($scope, $http) {
+.controller('QuerytableCtrl', function ($rootScope, $scope, $http) {
 
 	// User Submitted Variables
-    var _projectID = '604614689115';
+    var _projectID = $rootScope.projectId;
     $scope.table1Config = {};
-    $scope.query = "SELECT * FROM [publicdata:samples.github_timeline] LIMIT 100";
+    $scope.query = "SELECT * FROM [bbva-ida:hwpd.requests] LIMIT 100";
 
 	$scope.launchBigQuery = function() {
 

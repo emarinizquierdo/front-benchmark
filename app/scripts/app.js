@@ -3,7 +3,8 @@
 angular.module('bbvaBenchmarkApp', [
   'ngSanitize',
   'ngRoute',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ui.multiselect'
 ])
 .config(function ($routeProvider, $locationProvider) {
   $routeProvider
