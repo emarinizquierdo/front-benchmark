@@ -1,0 +1,13 @@
+<h3>Query Table</h3>
+
+<div class="well">
+	<form role="form">
+		<div class="form-group">
+			<label for="exampleInputEmail1">Email address</label>
+			<textarea class="form-control" rows="3" ng-model="query"></textarea>
+		</div>
+		<button type="submit" class="btn btn-default" ng-click="launchBigQuery()">Launch Query</button>
+	</form>
+</div>
+
+<div query-loader query-config="table1Config" style="height: 400px; width: 100%;"></div>

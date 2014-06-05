@@ -47,7 +47,6 @@ angular.module('bbvaBenchmarkApp')
 		$scope.table1Config = {
 			  projectId : _projectID
 			, query : _auxQuery//'SELECT repository_url, repository_size FROM [publicdata:samples.github_timeline] LIMIT 100;'
-			, schema : [['string', 'inicio'],['string', 'fin'],['float', 'diferencia']]
 			, callback : _table1ConfigCallback
 		};
 
@@ -60,24 +59,6 @@ angular.module('bbvaBenchmarkApp')
 			var table = new google.visualization.Table(document.getElementById('tablespreadsheet'));
 			table.draw(p_data);
 
-/*
-			SELECT
-	mt1.BatchId,
-    mt1.url as inicio,
-    mt2.url as fin,
-	mt2.time - mt1.time AS diferencia   
-FROM
-	Table1 mt1
-	LEFT JOIN Table1 mt2
-		ON (
-             mt2.url = 'bbva_inicio'
-          OR mt2.url = 'ksni_inicio'
-        )
-
-WHERE mt1.url = 'ksni_inicio'
-AND mt1.url != mt2.url
-AND mt1.BatchId = mt2.BatchId
-*/
 		}
 
     }

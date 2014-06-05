@@ -23,6 +23,10 @@ angular.module('bbvaBenchmarkApp', [
       templateUrl: 'partials/help',
       controller: 'HelpCtrl'
     })
+    .when('/querytable', {
+      templateUrl: 'partials/querytable',
+      controller: 'QuerytableCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });

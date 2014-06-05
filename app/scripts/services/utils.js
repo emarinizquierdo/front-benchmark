@@ -8,18 +8,23 @@ angular.module('bbvaBenchmarkApp')
 		var data = new google.visualization.DataTable();
 		var _auxCasting = [];
 		var _type;
+		var _fields = (response.schema) ? response.schema.fields : [];
 
-		for(var _i = 0; _i < p_header.length; _i++){
-			_type = (p_header[_i][0] == "float" || p_header[_i][0] == "integer") ? "number" : p_header[_i][0];
-			data.addColumn(_type, p_header[_i][1])
+		for(var _i = 0; _i < _fields.length; _i++){
+			_type = ( _fields[_i].type.toLowerCase() == "float" || _fields[_i].type.toLowerCase() == "integer") ? "number" : _fields[_i].type.toLowerCase();
+			data.addColumn(_type, _fields[_i].name)
 		}
+
 	    $.each(response.result.rows, function(i, item) {
 	    	_auxCasting = [];
-	    	for(var _i = 0; _i < p_header.length; _i++){
-	    		if(p_header[_i][0] == "integer"){
+	    	for(var _i = 0; _i < _fields.length; _i++){
+	    		if(_fields[_i].type.toLowerCase() == "integer"){
 	    			_auxCasting.push(parseInt(item.f[_i].v));
-	    		}else if (p_header[_i][0] == "float"){
+	    		}else if (_fields[_i].type.toLowerCase() == "float"){
 	    			_auxCasting.push(parseFloat(item.f[_i].v));
+	    		}else if (_fields[_i].type.toLowerCase() == "boolean"){
+	    			var _auxBoolean = (item.f[_i].v && item.f[_i].v.toLowerCase() == "true");
+	    			_auxCasting.push(_auxBoolean);
 	    		}else{
 	    			_auxCasting.push(item.f[_i].v);
 	    		}			

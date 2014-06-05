@@ -11,6 +11,10 @@ angular.module('bbvaBenchmarkApp')
 		'link': '/ghpd2Summary'
     },
     {
+        'title': 'Query Table',
+        'link': '/querytable'
+    },
+    {
         'title': 'Help',
         'link': '/help'
     }];

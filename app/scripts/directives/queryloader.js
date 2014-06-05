@@ -3,7 +3,7 @@
 angular.module('bbvaBenchmarkApp')
 .directive('queryLoader', function () {
 	return {
-		template: "<div class='query-loader'><span class='loading glyphicon glyphicon-refresh' ng-show='loading'></span><div class='visualizator' ng-hide='loading'></div></div>",
+		template: "<div class='query-loader'><span class='loading glyphicon glyphicon-refresh' ng-show='loading'></span><div class='alert alert-danger' ng-show='error'>{{errorMessage}}</div><div class='visualizator' ng-hide='loading || error'></div></div>",
 		restrict: 'A',
 		scope : {
 			queryConfig : '='
@@ -12,6 +12,8 @@ angular.module('bbvaBenchmarkApp')
 		controller : function($rootScope, $scope, $element, Utils){
 
 			$scope.loading = false;
+			$scope.error = false;
+			$scope.errorMessage;
 
 			$scope.$watch('queryConfig', _handleQuery);
 
@@ -31,11 +33,22 @@ angular.module('bbvaBenchmarkApp')
 				});
 
 				request.execute(function(response) {
+
+					if(response.error){
+						$scope.errorMessage = response.error.message;
+						$scope.error = true;
+						$scope.loading = false;
+						if(!$scope.$$phase){
+							$scope.$apply();
+						}
+						return;
+					}
+
 					$scope.loading = false;
 					if(!$scope.$$phase){
 						$scope.$apply();
 					}
-					var data = Utils.parseToDataTable(response, p_new.schema);					
+					var data = Utils.parseToDataTable(response);					
 					p_new.callback(data, $element.find(".visualizator")[0]);					
 				});
 			}
