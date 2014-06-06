@@ -4,7 +4,7 @@
 			<a data-toggle="collapse" class="collapse-title" ng-click="collapse()">
 				Filters				
 			</a>
-			<button type="button" ng-class="{'btn-success' : enableFilters, 'btn-danger' : !enableFilters}" class="btn btn-xs filter-button" ng-click="enableFilters = !enableFilters">{{enableFiltersMessage}}</button>
+			<button type="button" ng-class="{'btn-success' : enableFilters, 'btn-danger' : !enableFilters}" class="btn btn-xs filter-button" ng-click="enableFiltersAction()">{{enableFiltersMessage}}</button>
 		</h4>
 	</div>
 	<div class="containerCollapsable panel-collapse collapse">
@@ -100,6 +100,10 @@
 					</div>
 		        </div>
 		    </form>
+		    <div class="well" ng-show="enableFilters">
+				<p>{{whereClause}}</p>
+			</div>
 		</div>
-	</div>
+
+	</div>	
 </div>

@@ -1,4 +1,17 @@
 <h3>GHPD2 Summary</h3>
 
-<div ng-include="'views/partials/sections.html'"></div>
-<p>This is the ghpd2Summary view.</p>
+<div filters current-filter="mainFilter" where-clause="whereClause01" ></div>
+
+<button type="button" class="btn btn-primary" id="auth_button" ng-click="refreshVisualizations();" ng-disabled="urlTargets.length < 2">Try launch Query to BigQuery</button>
+<p>
+<h4>Average GHPD2 Route Loading Time</h4>
+<div query-loader query-config="table1Config" style="height: 400px; width: 100%;"></div>
+<!--<div id="tablespreadsheet" style="height: 400px; width: 100%;"></div>-->
+<div query-loader query-config="table4Config" style="height: 400px; width: 100%;"></div>
+<div query-loader query-config="table5Config" style="height: 400px; width: 100%;"></div>
+<h4>Average Resource Loading Time</h4>
+<div query-loader query-config="table3Config" style="height: 400px; width: 100%;"></div>
+<h4>Time consumption by Resource Type </h4>
+<div query-loader query-config="table2Config" style="height: 400px; width: 100%;"></div>
+</p>
+

@@ -23,6 +23,7 @@ angular.module('bbvaBenchmarkApp')
 					return false;
 				}
 
+				$scope.error = false;
 				$scope.loading = true;
 				var _projectID = p_new.projectId;
 
@@ -34,6 +35,16 @@ angular.module('bbvaBenchmarkApp')
 
 				request.execute(function(response) {
 
+					if(response.totalRows == 0){
+						$scope.errorMessage = "There are not results for this query";
+						$scope.error = true;
+						$scope.loading = false;
+						if(!$scope.$$phase){
+							$scope.$apply();
+						}
+						return;
+					}
+
 					if(response.error){
 						$scope.errorMessage = response.error.message;
 						$scope.error = true;
@@ -43,7 +54,7 @@ angular.module('bbvaBenchmarkApp')
 						}
 						return;
 					}
-
+					
 					$scope.loading = false;
 					if(!$scope.$$phase){
 						$scope.$apply();

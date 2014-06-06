@@ -14,9 +14,11 @@ angular.module('bbvaBenchmarkApp')
 
 			$scope.enableFilters = false;
 			$scope.enableFiltersMessage = ($scope.enableFilters) ? "Disable Filters" : "Enable Filters";
-			
-			$scope.startTimeFilter = new Date();
-			$scope.endTimeFilter = new Date();
+			$scope.whereClause = "";
+
+			var date = new Date();
+			$scope.startTimeFilter = new Date(date.getFullYear(), date.getMonth(), 1);
+			$scope.endTimeFilter = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 			$scope.dateOptions = {
 				formatYear: 'yy',
 				startingDay: 1
@@ -27,7 +29,9 @@ angular.module('bbvaBenchmarkApp')
 		    $scope.connectionTypes = [{id:1, name: 'wifi', value: 'wifi'}, {id:2, name: 'redbbva', value:'redbbva'}];
 		    $scope.selectedConnectionType = [];
 
-		    $scope.mimetypes = [{id:1, name: 'text/html', value: 'text/html; charset=UTF-8'}, {id:2, name: 'text/javascript', value:'application/x-javascript'}, {id:1, name: 'text/css', value: 'text/css'}];
+		    $scope.mimetypes = [{id:1, name: 'Images', value: 'image'}, {id:2, name: 'Javascript', value:'script'}, {id:3, name: 'Stylesheet', value: 'stylesheet'},
+		    	{id:4, name: 'XMLHTTP Requests', value: 'xmlhttprequest'}, {id:5, name: 'Objects', value:'object'}, {id:6, name: 'Other', value: 'other'}
+		    ];
 		    $scope.selectedMimetype = [];
 
 		    $scope.countries = [
@@ -104,9 +108,26 @@ angular.module('bbvaBenchmarkApp')
 					if(_whereClause.length > 0) _whereClause += "AND ";
 					_whereClause += "( " + _workplaceClause + " ) ";
 				}
-				
-				debugger;
 
+				if(_whereClause.length > 0) _whereClause += "AND ";
+				_whereClause += "( startedDateTime >= " + $scope.startTimeFilter.getTime() + " AND startedDateTime <= " + $scope.endTimeFilter.getTime() +" ) ";
+
+				if($scope.userFilter && $scope.userFilter.length > 0){
+					if(_whereClause.length > 0) _whereClause += "AND ";
+					_whereClause += "( userId = " + $scope.userFilter + " ) ";
+				}
+
+				if($scope.enableFilters){
+					$scope.whereClause = _whereClause;
+				}else{
+					$scope.whereClause = "";
+				}
+
+			}
+
+			$scope.enableFiltersAction = function(){
+				$scope.enableFilters = !$scope.enableFilters;
+				$scope.enableFiltersMessage = ($scope.enableFilters) ? "Disable Filters" : "Enable Filters";
 			}
 
 			$scope.$watch('selectedCountry', function(p_new){	
@@ -116,6 +137,11 @@ angular.module('bbvaBenchmarkApp')
 						_auxSpainSelected = true;
 					}
 				}
+
+				if(!_auxSpainSelected){
+					$scope.selectedWorkplace = [];
+				}
+
 				$scope.spainSelected = _auxSpainSelected;
 
 				_updateFilter();
@@ -124,6 +150,10 @@ angular.module('bbvaBenchmarkApp')
 			$scope.$watch('selectedWorkplace', _updateFilter);
 			$scope.$watch('selectedConnectionType', _updateFilter);			
 			$scope.$watch('selectedMimetype', _updateFilter);
+			$scope.$watch('startTimeFilter', _updateFilter);
+			$scope.$watch('endTimeFilter', _updateFilter);
+			$scope.$watch('userFilter', _updateFilter);
+			$scope.$watch('enableFilters', _updateFilter);
 
 		},
 		link: function postLink(scope, element, attrs) {
