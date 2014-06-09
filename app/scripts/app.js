@@ -4,7 +4,8 @@ angular.module('bbvaBenchmarkApp', [
   'ngSanitize',
   'ngRoute',
   'ui.bootstrap',
-  'ui.multiselect'
+  'ui.multiselect',
+  'ui-rangeSlider'
 ])
 .config(function ($routeProvider, $locationProvider) {
   $routeProvider
@@ -41,6 +42,9 @@ angular.module('bbvaBenchmarkApp', [
   $rootScope.urlTargets = _auxUrlTargets || [];
 
   $rootScope.$on('$routeChangeStart', function (event, next) {
+    if(next.$$route && next.$$route.originalPath == "/help"){
+      return
+    }
     if (!$rootScope.authenticated) {
       $location.path('/bigquery');
     }

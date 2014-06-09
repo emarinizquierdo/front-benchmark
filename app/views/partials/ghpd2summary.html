@@ -2,16 +2,34 @@
 
 <div filters current-filter="mainFilter" where-clause="whereClause01" ></div>
 
-<button type="button" class="btn btn-primary" id="auth_button" ng-click="refreshVisualizations();" ng-disabled="urlTargets.length < 2">Try launch Query to BigQuery</button>
+<button type="button" class="btn btn-primary" id="auth_button" ng-click="refreshVisualizations();" ng-disabled="urlTargets.length < 2">Refresh</button>
 <p>
-<h4>Average GHPD2 Route Loading Time</h4>
+<blockquote>Total "DNS Lookup" samples: {{GHPD2urlTargetsMapping[0].count}}<br/>
+  Total "Community KSNI" samples: {{GHPD2urlTargetsMapping[1].count}}<br/>
+  Total "GHPD 1" samples: {{GHPD2urlTargetsMapping[2].count}}<br/>
+  Total "HPD 2" samples: {{GHPD2urlTargetsMapping[3].count}}<br/>
+</blockquote>
+<h4>Average GHPD2 route loading time</h4>
 <div query-loader query-config="table1Config" style="height: 400px; width: 100%;"></div>
 <!--<div id="tablespreadsheet" style="height: 400px; width: 100%;"></div>-->
+<h4>Average resource loading time by hours</h4>
 <div query-loader query-config="table4Config" style="height: 400px; width: 100%;"></div>
+<h4>Average resource loading time by connection type</h4>
 <div query-loader query-config="table5Config" style="height: 400px; width: 100%;"></div>
-<h4>Average Resource Loading Time</h4>
+<h4>Average resource loading time</h4>
 <div query-loader query-config="table3Config" style="height: 400px; width: 100%;"></div>
-<h4>Time consumption by Resource Type </h4>
+<h4>Consumption time by resource type </h4>
 <div query-loader query-config="table2Config" style="height: 400px; width: 100%;"></div>
+<h4>Consumption time by country </h4>
+<div class="form-group">
+	<label class="col-xs-2 col-md-2 col-lg-2 vcenter control-label text-right">Interval</label>
+	<div class="col-xs-3 vcenter">
+		<multiselect class="input-xlarge" multiple="false"
+	        ng-model="selectedInterval"
+	        options="c.name for c in intervals"
+	        change="selected()" ></multiselect>
+	</div>
+</div>
+<div query-loader query-config="table6Config" style="height: 400px; width: 100%;"></div>
 </p>
 

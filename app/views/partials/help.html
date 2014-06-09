@@ -1,1 +1,27 @@
-<p>This is the help view.</p>
+<h3>Help</h3>
+<p>Thanks to this application, you can view and analyze front loading times. It is possible to an architecture that combine several components that sniff network activity. The collected data is saved and processed and showed in this analytic framework.</p>
+<p>
+To understand how this framework works we need understand how we do a navegation.
+</p>
+<p>
+This framework has two generic sections: <b>"Dashboard"</b> and <b>"Query Table"</b>, which work with our "bigquery" database. In this database we save all raw navigation data, from any test, from any application.
+</p>
+<p>
+In <b>"Dashboard"</b> section, we can analyze custom navigation behaviours thanks to "URL targets" which set a path across our navigation. This way, we don't have to worry about how we did the benchmarking test because we have all raw data in "bigquery". In "Dashboard" section we found the more common charts which allow us to know what sections spend more time in our applications, what kind of resource is more common in that spend, or what services are working with a high latency.
+</p>
+
+<img src="/images/hwpd_help_01.jpg" class="img-responsive" />
+
+<p>
+For set up that intervals, you have to insert two targets at least wich exist in your navigation route. Those values will be saved for future sessions and you can update or delete that values. In that case, you will have to refresh the charts using the "Refresh" button.
+</p>
+
+<img src="/images/hwpd_help_02.jpg" class="img-responsive"/>
+
+<p>
+In <b>"Query Table"</b> section, we can do SQL querys against "bigquery" database (view <a href="https://developers.google.com/bigquery/query-reference#joins" target="_blank">Google Query Reference</a>) and get a complete table according to our custom targets. It is usefull if you can't get some value directly from the charts.
+</p>
+
+<p>
+Finnaly, we have application sections (currently "GHPD2 Summary" only), where we can view preformatted reports to help the user to get a fast and easy summary of each application tested.
+</p>

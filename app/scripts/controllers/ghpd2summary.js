@@ -13,19 +13,30 @@ angular.module('bbvaBenchmarkApp')
 	_GHPD2urlTargets[3] = "https://bbva-hpd2.appspot.com/a/bbva.com";
 	_GHPD2urlTargets[4] = "https://bbva-hpdwidgets.appspot.com/app/widgets/weatherwidget/scripts/scripts.js";
 
-	var _GHPD2urlTargetsMapping = [];
-	_GHPD2urlTargetsMapping[0] = "DNS Lookup";
-	_GHPD2urlTargetsMapping[1] = "Community KSNI";
-	_GHPD2urlTargetsMapping[2] = "GHPD 1";
-	_GHPD2urlTargetsMapping[3] = "HPD2";
+	$scope.GHPD2urlTargetsMapping = [];
+	$scope.GHPD2urlTargetsMapping[0] = { name : "DNS Lookup" };
+	$scope.GHPD2urlTargetsMapping[1] = { name : "Community KSNI" };
+	$scope.GHPD2urlTargetsMapping[2] = { name : "GHPD 1" };
+	$scope.GHPD2urlTargetsMapping[3] = { name : "HPD2" };
+
 
     $scope.table1Config = {};
     $scope.table2Config = {};
     $scope.table3Config = {};
     $scope.table4Config = {};
     $scope.table5Config = {};
+    $scope.table6Config = {};
 
     $scope.whereClause01 = "";
+
+    $scope.intervals = [
+		    	{id:1, name: $scope.GHPD2urlTargetsMapping[0].name, value: 0}, {id:2, name: $scope.GHPD2urlTargetsMapping[1].name, value:1}, {id:3, name: $scope.GHPD2urlTargetsMapping[2].name, value: 2},
+		    	{id:4, name: $scope.GHPD2urlTargetsMapping[3].name, value: 3}, {id:5}
+		    ];
+
+	$scope.selectedInterval = {};
+	$scope.selectedInterval.value = 0;
+	$scope.countryVisualization = {};
 
 	$scope.launchBigQuery = function() {
 
@@ -88,10 +99,10 @@ angular.module('bbvaBenchmarkApp')
 			myView.setColumns([0,2]);
 
 			for(var _i=0; _i < myView.n.zf.length; _i++){
-				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[0]) myView.n.zf[_i].c[0].v = _GHPD2urlTargetsMapping[0];
-				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[1]) myView.n.zf[_i].c[0].v = _GHPD2urlTargetsMapping[1];
-				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[2]) myView.n.zf[_i].c[0].v = _GHPD2urlTargetsMapping[2];
-				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[3]) myView.n.zf[_i].c[0].v = _GHPD2urlTargetsMapping[3];
+				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[0]) myView.n.zf[_i].c[0].v = $scope.GHPD2urlTargetsMapping[0].name;
+				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[1]) myView.n.zf[_i].c[0].v = $scope.GHPD2urlTargetsMapping[1].name;
+				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[2]) myView.n.zf[_i].c[0].v = $scope.GHPD2urlTargetsMapping[2].name;
+				if(myView.n.zf[_i].c[0].v == _GHPD2urlTargets[3]) myView.n.zf[_i].c[0].v = $scope.GHPD2urlTargetsMapping[3].name;
 			}
 
 			visualization.draw(myView, {curveType: 'function'});
@@ -105,7 +116,7 @@ angular.module('bbvaBenchmarkApp')
 
     $scope.launchBigQueryByHours = function() {
 
-		var _auxQuery = "SELECT mt1.url as inicio, mt2.url as fin, (INTEGER(mt1.startedDateTime/(1000*60*60))%24 + 2) as hour, ROUND(ABS(AVG(mt2.startedDateTime - mt1.startedDateTime))) as diferencia ";
+		var _auxQuery = "SELECT mt1.url as inicio, mt2.url as fin, (INTEGER(mt1.startedDateTime/(1000*60*60))%24 + 2) as hour, ROUND(ABS(AVG(mt2.startedDateTime - mt1.startedDateTime))) as diferencia, count(*) ";
 		_auxQuery += "FROM (SELECT * FROM " + _table + " WHERE ( ";
 
 		if(_GHPD2urlTargets.length > 0){
@@ -162,16 +173,30 @@ angular.module('bbvaBenchmarkApp')
 
 			var _aux = _pivot(p_data, 0, 2);
 
+			var _tableByHours = _aux.pivotedTable;
+			var _countedTargets = _aux.countTable;
+
 			var visualization = new google.visualization.LineChart(p_element);
 
-			for(var _i=0; _i < _aux.Af.length; _i++){
-				if(_aux.Af[_i].label == _GHPD2urlTargets[0]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[0];
-				if(_aux.Af[_i].label == _GHPD2urlTargets[1]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[1];
-				if(_aux.Af[_i].label == _GHPD2urlTargets[2]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[2];
-				if(_aux.Af[_i].label == _GHPD2urlTargets[3]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[3];
+			for(var _i=0; _i < _tableByHours.Af.length; _i++){
+				if(_tableByHours.Af[_i].label == _GHPD2urlTargets[0]) _tableByHours.Af[_i].label = $scope.GHPD2urlTargetsMapping[0].name;
+				if(_tableByHours.Af[_i].label == _GHPD2urlTargets[1]) _tableByHours.Af[_i].label = $scope.GHPD2urlTargetsMapping[1].name;
+				if(_tableByHours.Af[_i].label == _GHPD2urlTargets[2]) _tableByHours.Af[_i].label = $scope.GHPD2urlTargetsMapping[2].name;
+				if(_tableByHours.Af[_i].label == _GHPD2urlTargets[3]) _tableByHours.Af[_i].label = $scope.GHPD2urlTargetsMapping[3].name;
 			}
 
-			visualization.draw(_aux, {curveType: 'function'});
+			for(var _i=0; _i < _countedTargets.zf.length; _i++){
+				if(_countedTargets.zf[_i].c[0].v == _GHPD2urlTargets[0]) $scope.GHPD2urlTargetsMapping[0].count = _countedTargets.zf[_i].c[1].v;
+				if(_countedTargets.zf[_i].c[0].v == _GHPD2urlTargets[1]) $scope.GHPD2urlTargetsMapping[1].count = _countedTargets.zf[_i].c[1].v;
+				if(_countedTargets.zf[_i].c[0].v == _GHPD2urlTargets[2]) $scope.GHPD2urlTargetsMapping[2].count = _countedTargets.zf[_i].c[1].v;
+				if(_countedTargets.zf[_i].c[0].v == _GHPD2urlTargets[3]) $scope.GHPD2urlTargetsMapping[3].count = _countedTargets.zf[_i].c[1].v;
+			}
+
+			if(!$scope.$$phase){
+				$scope.$apply();
+			}
+
+			visualization.draw(_tableByHours, {curveType: 'function'});
 
 		}
 
@@ -179,7 +204,7 @@ angular.module('bbvaBenchmarkApp')
 
     $scope.launchBigQueryByConnection = function() {
 
-		var _auxQuery = "SELECT mt1.url as inicio, mt2.url as fin, mt1.network, ROUND(ABS(AVG(mt2.startedDateTime - mt1.startedDateTime))) as diferencia ";
+		var _auxQuery = "SELECT mt1.url as inicio, mt2.url as fin, mt1.network, ROUND(ABS(AVG(mt2.startedDateTime - mt1.startedDateTime))) as diferencia, count(*) ";
 		_auxQuery += "FROM (SELECT * FROM " + _table + " WHERE ( ";
 
 		if(_GHPD2urlTargets.length > 0){
@@ -234,15 +259,15 @@ angular.module('bbvaBenchmarkApp')
 
 		function _table5ConfigCallback( p_data, p_element ){
 
-			var _aux = _pivot(p_data, 0, 2);
+			var _aux = _pivot(p_data, 0, 2).pivotedTable;
 
 			var visualization = new google.visualization.BarChart(p_element);
 
 			for(var _i=0; _i < _aux.Af.length; _i++){
-				if(_aux.Af[_i].label == _GHPD2urlTargets[0]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[0];
-				if(_aux.Af[_i].label == _GHPD2urlTargets[1]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[1];
-				if(_aux.Af[_i].label == _GHPD2urlTargets[2]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[2];
-				if(_aux.Af[_i].label == _GHPD2urlTargets[3]) _aux.Af[_i].label = _GHPD2urlTargetsMapping[3];
+				if(_aux.Af[_i].label == _GHPD2urlTargets[0]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[0].name;
+				if(_aux.Af[_i].label == _GHPD2urlTargets[1]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[1].name;
+				if(_aux.Af[_i].label == _GHPD2urlTargets[2]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[2].name;
+				if(_aux.Af[_i].label == _GHPD2urlTargets[3]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[3].name;
 			}
 
 			visualization.draw(_aux, {curveType: 'function', isStacked: true});
@@ -301,10 +326,96 @@ angular.module('bbvaBenchmarkApp')
 
     }
 
+    $scope.launchBigQueryByCountry = function() {
+
+		var _auxQuery = "SELECT mt1.url as inicio, mt2.url as fin, mt1.country, ROUND(ABS(AVG(mt2.startedDateTime - mt1.startedDateTime))) as diferencia, count(*) ";
+		_auxQuery += "FROM (SELECT * FROM " + _table + " WHERE ( ";
+
+		if(_GHPD2urlTargets.length > 0){
+			_auxQuery += "url = '" + _GHPD2urlTargets[0] + "'";
+		}
+
+		for(var _i = 1; _i < _GHPD2urlTargets.length; _i++){
+			_auxQuery += "OR url = '" + _GHPD2urlTargets[_i] + "'";
+		}
+
+		_auxQuery += " ) ";
+
+		if($scope.whereClause01.length > 0){
+			_auxQuery += " AND " + $scope.whereClause01;
+		}
+
+		_auxQuery += ") as mt1 CROSS JOIN ( SELECT * FROM " + _table + " WHERE ( ";
+
+		if(_GHPD2urlTargets.length > 0){
+			_auxQuery += "url = '" + _GHPD2urlTargets[0] + "'";
+		}
+
+		for(var _i = 1; _i < _GHPD2urlTargets.length; _i++){
+			_auxQuery += "OR url = '" + _GHPD2urlTargets[_i] + "'";
+		}
+
+		_auxQuery += " ) ";
+
+		if($scope.whereClause01.length > 0){
+			_auxQuery += " AND " + $scope.whereClause01;
+		}
+
+    	_auxQuery += ") as mt2 WHERE ";
+		_auxQuery += "mt1.url != mt2.url AND mt1.batchId = mt2.batchId AND ( ";
+		
+
+		if(_GHPD2urlTargets.length > 0){
+			_auxQuery += "( mt1.url = '" + _GHPD2urlTargets[0] + "' AND mt2.url = '" + _GHPD2urlTargets[1] + "' )";
+		}
+
+		for(var _i = 1; _i < _GHPD2urlTargets.length - 1; _i++){
+			_auxQuery += "OR ( mt1.url = '" + _GHPD2urlTargets[_i] + "' AND mt2.url = '" + _GHPD2urlTargets[_i + 1] + "' )";
+		}
+
+		_auxQuery += ") GROUP BY inicio, fin, mt1.country";
+
+		$scope.table6Config = {
+			  projectId : _projectID
+			, query : _auxQuery
+			, callback : _table6ConfigCallback
+		};
+
+		function _table6ConfigCallback( p_data, p_element ){
+
+			var _aux = _pivot(p_data, 0, 2).pivotedTable;
+
+			var visualization = new google.visualization.GeoChart(p_element);
+
+			for(var _i=0; _i < _aux.Af.length; _i++){
+				if(_aux.Af[_i].label == _GHPD2urlTargets[0]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[0].name;
+				if(_aux.Af[_i].label == _GHPD2urlTargets[1]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[1].name;
+				if(_aux.Af[_i].label == _GHPD2urlTargets[2]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[2].name;
+				if(_aux.Af[_i].label == _GHPD2urlTargets[3]) _aux.Af[_i].label = $scope.GHPD2urlTargetsMapping[3].name;
+			}
+
+			$scope.countryVisualization.data = _aux;
+			$scope.countryVisualization.dom = p_element;
+
+			$scope.renderCountryReport( );		
+
+		}
+
+    }
+
+    $scope.renderCountryReport = function( ){
+    	if(!$scope.countryVisualization.dom) return;
+    	var visualization = new google.visualization.GeoChart($scope.countryVisualization.dom);
+    	var view = new google.visualization.DataView($scope.countryVisualization.data);
+	    view.setColumns([0, $scope.selectedInterval.value + 1]);
+	    visualization.draw(view, {colorAxis: {colors: ['#34BA36', '#CE3D20'] }, isStacked: true});
+    }
+
     if(_GHPD2urlTargets.length > 1){
     	$scope.launchBigQuery();
     	$scope.launchBigQueryByHours();
     	$scope.launchBigQueryByConnection();
+    	$scope.launchBigQueryByCountry();
     }
 
     $scope.launchBigQueryWeightResources();
@@ -316,9 +427,11 @@ angular.module('bbvaBenchmarkApp')
     	$scope.launchBigQueryByConnection();
     	$scope.launchBigQueryWeightResources();
     	$scope.launchBigQueryByMimeType();
+    	$scope.launchBigQueryByCountry();
     };
 
     $scope.$watch('whereClause01', $scope.refreshVisualizations);
+    $scope.$watch('selectedInterval', $scope.renderCountryReport);
 
     var _pivot = function (dataTable, p_indexColumnPivot, p_indexColumnPivot2) {
 
@@ -326,6 +439,7 @@ angular.module('bbvaBenchmarkApp')
 	    
 	    var viewColumns = [p_indexColumnPivot2];
 	    var groupColumns = [];
+	    var groupCountColumns = [];
 
 	    var _cleanAvg = function(p_data){
     		var _auxData = p_data.filter(Boolean);        
@@ -350,12 +464,20 @@ angular.module('bbvaBenchmarkApp')
 	        });
 	    }
 	    
+	    groupCountColumns.push({
+            column: 4,
+            type: 'number',
+            label: 'items',
+            aggregation: google.visualization.data.sum
+        });
+
 	    var view = new google.visualization.DataView(dataTable);
 	    view.setColumns(viewColumns);
 	    
 	    var pivotedData = google.visualization.data.group(view, [0], groupColumns);
+	    var pivotedDataCount = google.visualization.data.group(dataTable, [0], groupCountColumns);
 
-	    return pivotedData;
+	    return { pivotedTable : pivotedData, countTable: pivotedDataCount };
     };
 
 });

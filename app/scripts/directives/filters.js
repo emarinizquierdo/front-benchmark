@@ -26,7 +26,7 @@ angular.module('bbvaBenchmarkApp')
 			$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
 			$scope.format = $scope.formats[0];
 
-		    $scope.connectionTypes = [{id:1, name: 'wifi', value: 'wifi'}, {id:2, name: 'redbbva', value:'redbbva'}];
+		    $scope.connectionTypes = [{id:1, name: 'wifi', value: 'wifi'}, {id:2, name: 'redbbva', value:'redbbva'}, {id:3, name: 'ethernet (red externa)', value:'ethernet'}];
 		    $scope.selectedConnectionType = [];
 
 		    $scope.mimetypes = [{id:1, name: 'Images', value: 'image'}, {id:2, name: 'Javascript', value:'script'}, {id:3, name: 'Stylesheet', value: 'stylesheet'},
