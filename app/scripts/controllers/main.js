@@ -216,38 +216,40 @@ angular.module('bbvaBenchmarkApp')
 
     var _pivot = function (dataTable, p_indexColumnPivot, p_indexColumnPivot2) {
 
-            // get all the values in column B
-		    // this sorts the values in lexicographic order, so if you need a different order you have to build the array appropriately
-		    var distinctValues = dataTable.getDistinctValues(p_indexColumnPivot);
-		    
-		    var viewColumns = [p_indexColumnPivot2];
-		    var groupColumns = [];
-		    // build column arrays for the view and grouping
-		    for (var i = 0; i < distinctValues.length; i++) {
-		        viewColumns.push({
-		            type: 'number',
-		            label: distinctValues[i],
-		            calc: (function (x) {
-		                return function (dt, row) {
-		                    // return values of C only for the rows where B = distinctValues[i] (passed into the closure via x)
-		                    return (dt.getValue(row, 1) == x) ? dt.getValue(row, 3) : null;
-		                }
-		            })(distinctValues[i])
-		        });
-		        groupColumns.push({
-		            column: i + 1,
-		            type: 'number',
-		            label: distinctValues[i],
-		            aggregation: google.visualization.data.avg
-		        });
-		    }
-		    
-		    var view = new google.visualization.DataView(dataTable);
-		    view.setColumns(viewColumns);
-		    
-		    // next, we group the view on column A, which gets us the pivoted data
-		    var pivotedData = google.visualization.data.group(view, [0], groupColumns);
+	    var distinctValues = dataTable.getDistinctValues(p_indexColumnPivot);
+	    
+	    var viewColumns = [p_indexColumnPivot2];
+	    var groupColumns = [];
 
-		    return pivotedData;
-        };
+	    var _cleanAvg = function(p_data){
+    		var _auxData = p_data.filter(Boolean);        
+    		return google.visualization.data.avg(_auxData)
+		}
+
+	    for (var i = 0; i < distinctValues.length; i++) {
+	        viewColumns.push({
+	            type: 'number',
+	            label: distinctValues[i],
+	            calc: (function (x) {
+	                return function (dt, row) {		                   
+	                    return (dt.getValue(row, p_indexColumnPivot) == x) ? dt.getValue(row, 3) : null;
+	                }
+	            })(distinctValues[i])
+	        });
+	        groupColumns.push({
+	            column: i+1,
+	            type: 'number',
+	            label: distinctValues[i],
+	            aggregation: _cleanAvg
+	        });
+	    }
+	    
+	    var view = new google.visualization.DataView(dataTable);
+	    view.setColumns(viewColumns);
+	    
+	    var pivotedData = google.visualization.data.group(view, [0], groupColumns);
+
+	    return pivotedData;
+    };
+
 });
