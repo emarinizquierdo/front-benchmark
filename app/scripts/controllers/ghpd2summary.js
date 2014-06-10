@@ -38,6 +38,8 @@ angular.module('bbvaBenchmarkApp')
 	$scope.selectedInterval.value = 0;
 	$scope.countryVisualization = {};
 
+	$scope.resourceTime = "50000";
+
 	$scope.launchBigQuery = function() {
 
 		var _auxQuery = "SELECT mt1.url as inicio, mt2.url as fin, ROUND(ABS(AVG(mt2.startedDateTime - mt1.startedDateTime))) as diferencia ";
@@ -284,6 +286,12 @@ angular.module('bbvaBenchmarkApp')
 			_auxQuery += "WHERE " + $scope.whereClause01;
 		}
 
+		if($scope.whereClause01.length <= 0){
+			_auxQuery += "WHERE time < " + $scope.resourceTime + " ";
+		}else{
+			_auxQuery += " AND time < " + $scope.resourceTime + " ";
+		}
+		
 		_auxQuery += "GROUP BY url, ORDER BY Average_Time DESC LIMIT 10";
 
 		$scope.table3Config = {
