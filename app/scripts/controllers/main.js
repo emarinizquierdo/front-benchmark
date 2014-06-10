@@ -21,14 +21,7 @@ angular.module('bbvaBenchmarkApp')
 	$scope.selectedInterval.value = 0;
 	$scope.countryVisualization = {};
 
-	$scope.rangeResources = {
-	    range: {
-	        min: 0,
-	        max: 100000
-	    },
-	    minTime: 0,
-	    maxTime: 100000
-	};
+	$scope.resourceTime = "50000";
 
 	$scope.launchBigQuery = function() {
 
@@ -186,12 +179,12 @@ angular.module('bbvaBenchmarkApp')
 		}
 
 		if($scope.whereClause01.length <= 0){
-			_auxQuery += "WHERE time > " + $scope.rangeResources.minTime + " AND time < " + $scope.rangeResources.maxTime + " ";
+			_auxQuery += "WHERE time < " + $scope.resourceTime + " ";
 		}else{
-			_auxQuery += " AND time > " + $scope.rangeResources.minTime + " AND time < " + $scope.rangeResources.maxTime + " ";
+			_auxQuery += " AND time < " + $scope.resourceTime + " ";
 		}
 
-		_auxQuery += "GROUP BY url, ORDER BY Average_Time DESC LIMIT 10";
+		_auxQuery += "GROUP BY url, ORDER BY Average_Time DESC LIMIT 40";
 
 		$scope.table3Config = {
 			  projectId : _projectID
@@ -343,7 +336,6 @@ angular.module('bbvaBenchmarkApp')
 	});
 
 	$scope.$watch('selectedInterval', $scope.renderCountryReport);
-	//$scope.$watch('rangeResources.minTime', $scope.launchBigQueryWeightResources);
 
     var _pivot = function (dataTable, p_indexColumnPivot, p_indexColumnPivot2) {
 

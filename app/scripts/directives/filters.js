@@ -45,7 +45,8 @@ angular.module('bbvaBenchmarkApp')
 
 		    $scope.workplaces = [
 		    	{id:1, name: 'Azca', value: 'azca'}, {id:2, name: 'Manoteras', value: 'manoteras'}, {id:3, name: 'Ciudad BBVA', value: 'ciudadbbva'},
-		    	{id:4, name: 'Tablas I', value: 'tablasi'}, {id:5, name: 'Tablas II', value: 'tablasii'}, {id:6, name: 'Vaguada', value: 'vaguada'}
+		    	{id:4, name: 'Tablas I', value: 'tablasi'}, {id:5, name: 'Tablas II', value: 'tablasii'}, {id:6, name: 'Vaguada', value: 'vaguada'},
+		    	{id:7, name: 'Otro', value: 'NA'}
 		    ];
 
 		    $scope.selectedWorkplace = [];

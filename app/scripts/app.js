@@ -5,7 +5,7 @@ angular.module('bbvaBenchmarkApp', [
   'ngRoute',
   'ui.bootstrap',
   'ui.multiselect',
-  'ui-rangeSlider'
+  'uiSlider'
 ])
 .config(function ($routeProvider, $locationProvider) {
   $routeProvider

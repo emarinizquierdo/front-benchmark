@@ -13,7 +13,8 @@
 <h4>Average resource loading time by hours</h4>
 <div query-loader query-config="table4Config" style="height: 400px; width: 100%;"></div>
 <h4>Average resource loading time</h4>
-<div range-slider min="rangeResources.range.min" max="rangeResources.range.max" model-min="rangeResources.minTime" model-max="rangeResources.maxTime" step="100" prevent-equal-min-max="true"></div>
+Show resources with average loading time to {{resourceTime}} ms
+<slider floor="0" ceiling="100000" step="100" ng-model="resourceTime"></slider><button type="button" class="btn btn-primary" id="auth_button" ng-click="launchBigQueryWeightResources();" >Refresh</button>
 <div query-loader query-config="table3Config" style="height: 400px; width: 100%;"></div>
 <h4>Consumption time by resource type </h4>
 <div query-loader query-config="table2Config" style="height: 400px; width: 100%;"></div>
