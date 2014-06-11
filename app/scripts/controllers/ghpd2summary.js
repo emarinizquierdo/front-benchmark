@@ -280,19 +280,21 @@ angular.module('bbvaBenchmarkApp')
 
     $scope.launchBigQueryWeightResources = function() {
 
-		var _auxQuery = "SELECT url, AVG(time) as Average_Time FROM " + _table + " ";
+		var _regexp = "(\\?|\\&|\\#)([^=]+)([^&]+)";
+
+		var _auxQuery = "SELECT REGEXP_REPLACE (url, r'" + _regexp + "', '') AS urlparsed, ROUND(AVG(time)) as Average_Time FROM " + _table + " ";
 
 		if($scope.whereClause01.length > 0){
 			_auxQuery += "WHERE " + $scope.whereClause01;
 		}
 
 		if($scope.whereClause01.length <= 0){
-			_auxQuery += "WHERE time < " + $scope.resourceTime + " ";
+			_auxQuery += "WHERE time < " + $scope.resourceTime + " AND url NOT LIKE '%bbva.112.2o7.net%' ";
 		}else{
-			_auxQuery += " AND time < " + $scope.resourceTime + " ";
+			_auxQuery += " AND time < " + $scope.resourceTime + " AND url NOT LIKE '%bbva.112.2o7.net%' ";
 		}
-		
-		_auxQuery += "GROUP BY url, ORDER BY Average_Time DESC LIMIT 10";
+
+		_auxQuery += "GROUP BY urlparsed, ORDER BY Average_Time DESC LIMIT 10";
 
 		$scope.table3Config = {
 			  projectId : _projectID

@@ -19,7 +19,7 @@ angular.module('bbvaBenchmarkApp')
 
 			function _handleQuery( p_new ){
 				
-				if(!p_new.query || !$rootScope.authenticated){
+				if(!p_new || !p_new.query || !$rootScope.authenticated){
 					return false;
 				}
 
